@@ -1,0 +1,6 @@
+# directory to store .wav files
+audio-files
+
+# sketch.json for arduino-cli settings to program boards
+*.json
+
