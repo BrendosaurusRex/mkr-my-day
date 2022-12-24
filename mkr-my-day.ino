@@ -40,8 +40,8 @@ void setup() {
     Serial.print(duration);
     Serial.println(" seconds");
 
-    // adjust the playback volume
-    AudioOutI2S.volume(5);
+    // volume level to set between 0.00 and 100.0 as a percentage
+    AudioOutI2S.volume(50.0);
 
     // check if the I2S output can play the wave file
     if (!AudioOutI2S.canPlay(waveFile)) {
