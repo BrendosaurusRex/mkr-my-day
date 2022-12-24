@@ -57,15 +57,18 @@ void setup() {
     // start playback
     Serial.println("Starting playback");
     AudioOutI2S.play(waveFile);
+    if (AudioOutI2S.isPlaying()) { digitalWrite(LED_BUILTIN, HIGH); }
+    AudioOutI2S.stop();
     Serial.println("Finished playback");
+    digitalWrite(LED_BUILTIN, LOW);
     delay(1000);
 
 } // setup()
 
 void loop() {
-    digitalWrite(LED_BUILTIN, HIGH);
     Serial.println("Starting playback");
     AudioOutI2S.play(waveFile);
+    if (AudioOutI2S.isPlaying()) { digitalWrite(LED_BUILTIN, HIGH); }
     Serial.println("Finished playback");
     digitalWrite(LED_BUILTIN, LOW);
     delay(1000);
