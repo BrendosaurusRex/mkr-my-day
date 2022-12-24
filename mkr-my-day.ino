@@ -15,17 +15,11 @@ void setup() {
 
     Serial.begin(9600);
     Serial.print("Initializing SD card...");
-    if (!SD.begin()) {
-        Serial.println("Initialization failed!");
-        while(1);
-    }
+    if (!SD.begin()) { Serial.println("Initialization failed!"); while(1); }
     Serial.println("Initialization done.");
 
     waveFile = SDWaveFile(filename);
-    if (!waveFile) {
-        Serial.println("Wave file is invalid!");
-        while(1);
-    }
+    if (!waveFile) { Serial.println("Wave file is invalid!"); while(1); }
     Serial.print("Loaded file: ");
     Serial.println(filename);
 
