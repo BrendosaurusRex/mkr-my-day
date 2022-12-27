@@ -23,17 +23,11 @@ void setup() {
     digitalWrite(LED_BUILTIN, LOW);
 
     Serial.print("Initializing SD card...");
-    if (!SD.begin()) {
-        Serial.println("Initialization failed!");
-        while(1);
-    }
+    if (!SD.begin()) { Serial.println("Initialization failed!"); while(1); }
     Serial.println("Initialization done.");
 
     waveFile = SD.open(filename);
-    if (!waveFile) {
-        Serial.println("Wave file is invalid!");
-        while(1); // do nothing
-    }
+    if (!waveFile) { Serial.println("Wave file is invalid!"); while(1); }
     Serial.print("Loaded file: ");
     Serial.println(filename);
 
