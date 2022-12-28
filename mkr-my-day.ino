@@ -1,7 +1,7 @@
 #include <SD.h>
 #include <ArduinoSound.h>
 
-const char filename[] = "tone440.wav";
+const char filename[] = "16jpiper.wav";
 
 SDWaveFile waveFile;
 
@@ -10,10 +10,11 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
 
     digitalWrite(LED_BUILTIN, HIGH);
-    delay(3000);
+    delay(2000);
     digitalWrite(LED_BUILTIN, LOW);
 
     Serial.begin(9600);
+    // while(!Serial);
     Serial.print("Initializing SD card...");
     if (!SD.begin()) { Serial.println("Initialization failed!"); while(1); }
     Serial.println("Initialization done.");
@@ -41,19 +42,16 @@ void setup() {
     Serial.println(" seconds");
 
     // volume level to set between 0.00 and 100.0 as a percentage
-    AudioOutI2S.volume(50.0);
+    AudioOutI2S.volume(5.0);
 
     // check if the I2S output can play the wave file
-    if (!AudioOutI2S.canPlay(waveFile)) {
-        Serial.println("unable to play wave file using I2S!");
-        while (1);
-    }
+    if (!AudioOutI2S.canPlay(waveFile)) { Serial.println("unable to play wave file using I2S!"); while (1); }
 
     // start playback
     Serial.println("Starting playback");
     AudioOutI2S.play(waveFile);
     if (AudioOutI2S.isPlaying()) { digitalWrite(LED_BUILTIN, HIGH); }
-    AudioOutI2S.stop();
+    // AudioOutI2S.stop();
     Serial.println("Finished playback");
     digitalWrite(LED_BUILTIN, LOW);
     delay(1000);
@@ -61,12 +59,13 @@ void setup() {
 } // setup()
 
 void loop() {
-    Serial.println("Starting playback");
-    AudioOutI2S.play(waveFile);
-    if (AudioOutI2S.isPlaying()) { digitalWrite(LED_BUILTIN, HIGH); }
-    Serial.println("Finished playback");
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(1000);
+    // Serial.println("Starting playback");
+    // AudioOutI2S.play(waveFile);
+    // if (AudioOutI2S.isPlaying()) { digitalWrite(LED_BUILTIN, HIGH); }
+    // Serial.println("Finished playback");
+    // digitalWrite(LED_BUILTIN, LOW);
+    // delay(1000);
 
+    while (1);
 } // loop()
 
