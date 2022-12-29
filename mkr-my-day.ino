@@ -1,20 +1,25 @@
 #include <SD.h>
 #include <ArduinoSound.h>
 
+#define PLAY_BUTTON_PIN 7
+#define VOLUME_PIN      A1
+
 const char filename[] = "16jpiper.wav";
 
 SDWaveFile waveFile;
 
 void setup() {
 
-    pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(PLAY_BUTTON_PIN, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(PLAY_BUTTON_PIN), PlayButtonInterrupt, FALLING);
 
+    pinMode(VOLUME_PIN, INPUT);
+
+    pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);
-    delay(2000);
-    digitalWrite(LED_BUILTIN, LOW);
 
     Serial.begin(9600);
-    // while(!Serial);
+    delay(1000);
     Serial.print("Initializing SD card...");
     if (!SD.begin()) { Serial.println("Initialization failed!"); while(1); }
     Serial.println("Initialization done.");
@@ -41,31 +46,40 @@ void setup() {
     Serial.print(duration);
     Serial.println(" seconds");
 
-    // volume level to set between 0.00 and 100.0 as a percentage
-    AudioOutI2S.volume(5.0);
+    float volumeLevel = getVolumeLevel(VOLUME_PIN);
+    AudioOutI2S.volume(volumeLevel);
 
     // check if the I2S output can play the wave file
     if (!AudioOutI2S.canPlay(waveFile)) { Serial.println("unable to play wave file using I2S!"); while (1); }
 
-    // start playback
-    Serial.println("Starting playback");
-    AudioOutI2S.play(waveFile);
-    if (AudioOutI2S.isPlaying()) { digitalWrite(LED_BUILTIN, HIGH); }
-    // AudioOutI2S.stop();
-    Serial.println("Finished playback");
+    Serial.println("===");
+    Serial.println("Setup done!\n===");
+    delay(500);
     digitalWrite(LED_BUILTIN, LOW);
-    delay(1000);
-
 } // setup()
 
 void loop() {
-    // Serial.println("Starting playback");
-    // AudioOutI2S.play(waveFile);
-    // if (AudioOutI2S.isPlaying()) { digitalWrite(LED_BUILTIN, HIGH); }
-    // Serial.println("Finished playback");
-    // digitalWrite(LED_BUILTIN, LOW);
-    // delay(1000);
-
-    while (1);
+    while(1);
 } // loop()
+
+void PlayButtonInterrupt() {
+    noInterrupts();
+    Serial.println(">>>");
+    AudioOutI2S.volume(getVolumeLevel(VOLUME_PIN));
+    Serial.println("Starting playback from Interrupt!");
+    digitalWrite(LED_BUILTIN, HIGH);
+    AudioOutI2S.play(waveFile);
+    Serial.println("Finished playback from Interrupt!");
+    Serial.println("###");
+    digitalWrite(LED_BUILTIN, LOW);
+    interrupts();
+} // PlayButtonInterrupt()
+
+float getVolumeLevel(int volumePin) {
+    float volumePercent = (float) analogRead(volumePin) / 10.23;
+    Serial.print("Volume = ");
+    Serial.print(volumePercent);
+    Serial.println("%");
+    return volumePercent;
+} // getVolumeLevel()
 
