@@ -1,4 +1,5 @@
 audio-files
+build
 Makefile
 
 # sketch.json for arduino-cli settings to program boards
