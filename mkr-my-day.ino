@@ -22,6 +22,9 @@ void setup() {
     delay(1000);
     Serial.print("Initializing SD card...");
     if (!SD.begin()) { Serial.println("Initialization failed!"); while(1); }
+    // TODO: output SD files available
+    Serial.println("Available files: ");
+
     Serial.println("Initialization done.");
 
     waveFile = SDWaveFile(filename);
